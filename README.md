@@ -1,3 +1,8 @@
+Thanks for sharing the full draft! I've gone through your README and cleaned up formatting, fixed section headers, improved Markdown structure, and ensured code blocks render correctly. Here's your polished, GitHub-ready version:
+
+---
+
+````markdown
 # Axieva Assignment
 
 ## Objective
@@ -38,8 +43,6 @@ Design and implement a **Spring Boot-based RESTful service** that:
     Map<String, List<Student>>
     ```
   - Parsing and indexing should be performed using **multithreading** for better performance.
-
----
 
 ### 2. Search API
 
@@ -100,8 +103,6 @@ Design and implement a **Spring Boot-based RESTful service** that:
   - Placed in `src/main/resources/`  
   - Or loaded via **absolute file path** or **file upload**
 
----
-
 ### Record Volume
 
 The dataset contains approximately **100,000** student records, simulating a **large-scale data** scenario for testing performance, indexing, and in-memory storage efficiency.
@@ -111,26 +112,30 @@ The dataset contains approximately **100,000** student records, simulating a **l
 ### Schema / Columns
 
 | Column Name | Data Type | Description                   | Example        |
-|-------------|------------|-------------------------------|----------------|
-| ID          | Integer    | Unique identifier             | `3`            |
-| Name        | String     | Full name of the student      | `Amit Sharma`  |
-| Age         | Integer    | Age of the student            | `16`           |
-| Class       | String     | Class and section             | `10A`          |
-| Grade       | String     | Academic grade                | `A`, `B+`      |
+|-------------|-----------|-------------------------------|----------------|
+| ID          | Integer   | Unique identifier             | `3`            |
+| Name        | String    | Full name of the student      | `Amit Sharma`  |
+| Age         | Integer   | Age of the student            | `16`           |
+| Class       | String    | Class and section             | `10A`          |
+| Grade       | String    | Academic grade                | `A`, `B+`      |
 
 ---
 
+## Architecture
 
-
-### . Architecture  
 The system follows a simple layered architecture:
+
 - **Controller Layer**: Handles HTTP requests and maps them to service methods.
 - **Service Layer**: Contains the business logic for loading, indexing, and searching student data.
-- **Model Layer**: Defines the Student entity used for data storage.
+- **Model Layer**: Defines the `Student` entity used for data storage.
 - **Indexing**: Uses a `ConcurrentHashMap` to store lowercase student names as keys for fast retrieval.
 - **Parallel Processing**: Utilizes Java `ForkJoinPool` for multi-threaded CSV parsing.
 
-### . Project Structure
+---
+
+## Project Structure
+
+````
 
 student-search-inmemory/
 ├── src/main/java/com/example/inmemory/controller
@@ -139,22 +144,26 @@ student-search-inmemory/
 ├── src/main/resources/students.csv
 └── pom.xml
 
+````
 
+---
 
+## Algorithms Used for Searching
 
-### . Algorithms Used for Searching  
 - **Linear Search**: Iterates through the entire list of students to find matches (O(n)).
 - **Index Search**: Uses a pre-built `ConcurrentHashMap` to look up students by lowercase exact name (O(1)).
 - **Prefix Search**: Scans index keys to find matches starting with the given prefix (O(k), where k = number of unique names).
 
-### . API Endpoints
+---
+
+## API Endpoints
 
 1. **POST `/index`** - Build index from CSV file  
    - Params: `csvPath` (optional)  
    - Response: Stats about loading and indexing  
 
 2. **GET `/search`** - Search students by exact name  
-   - Params: `name` (required), `mode` (`linear` or `exact`)  
+   - Params: `name` (required), `mode` (`linear` or `index`)  
    - Response: List of matching students  
 
 3. **GET `/search-prefix`** - Search students by name prefix  
@@ -163,11 +172,13 @@ student-search-inmemory/
 
 4. **GET `/debug-index`** - Return the complete index map (for debugging)
 
-### . Learnings
+---
+
+## Learnings
 
 - Spring Boot Basics: REST controllers, dependency injection
 - Maven: Dependency management and builds
-- Multithreading in Java: ForkJoinPool for parallelism
+- Multithreading in Java: `ForkJoinPool` for parallelism
 - Data Structures: `ConcurrentHashMap` for thread-safe access
 - Algorithm Complexity: Linear vs Indexed searching
 - REST API Design: Endpoints, query params, JSON responses
@@ -175,9 +186,12 @@ student-search-inmemory/
 - OpenCSV Library: For parsing CSV data
 - Indexing Concepts: How indexing improves search performance
 
-### . Conclusion
+---
+
+## Conclusion
 
 This project showcases a practical implementation of an **in-memory search engine** using Spring Boot. It highlights the trade-offs between different search algorithms, demonstrates the performance benefits of indexing, and serves as a great learning project for:
+
 - Multithreading
 - REST API development
 - Java data structures
@@ -188,57 +202,80 @@ This project showcases a practical implementation of an **in-memory search engin
 
 ### 📦 Build the Project
 
---- bash
+```bash
 mvn clean package
-Generates a JAR in target/ (e.g. student-search-inmemory-0.0.1-SNAPSHOT.jar)
+````
 
-▶️ Run the JAR
+Generates a JAR in `target/` (e.g. `student-search-inmemory-0.0.1-SNAPSHOT.jar`)
+
+---
+
+### ▶️ Run the JAR
+
+```bash
 java -jar target/student-search-inmemory-0.0.1-SNAPSHOT.jar
+```
 
-🌐 Open the App in Browser
+---
 
-Visit: http://localhost:8080
-(Full frontend + backend served from same place)
+### 🌐 Open the App in Browser
 
-🔧 Use the App
+Visit: [http://localhost:8080](http://localhost:8080)
+(Full frontend + backend served from the same place)
 
-Leave CSV path empty to use the default students.csv in resources.
+---
 
-Or enter a full local file path (e.g. D:\Data\my_students.csv).
+### 🔧 Use the App
 
-**Step A** — Build Index
+* **Default behavior**: If no CSV path is provided, it uses the `students.csv` file in the `resources` directory.
+* **Custom CSV**: You can input an **absolute file path** to use your own CSV file.
 
-Open http://localhost:3000
+---
 
-Leave file path empty to use default CSV, or enter full path to your own CSV.
+## 🧪 Instructions
 
-Click "Build Index"
+### **Step A** — Build Index
 
-Backend reads, parses CSV, and builds in-memory index (multi-threaded).
+1. Open [http://localhost:3000](http://localhost:3000)
+2. Optionally enter a full file path (e.g., `D:\Data\my_students.csv`)
+3. Click **"Build Index"**
+4. Backend reads and parses the CSV, then builds the in-memory index (multi-threaded)
 
-See stats like:
+Sample stats:
 
+```
 Rows: 100000
 Unique names: 100
 Parse: 54 ms
 Index: 33 ms
+```
 
-**Step B** — Search Students
+---
 
-Enter a name or prefix
+### **Step B** — Search Students
 
-**Choose mode**:
+1. Enter a **name** or **prefix**
+2. Choose search mode:
 
-linear → scans all records
+   * `linear`: scans all records
+   * `index`: uses the in-memory map
+3. Choose match type:
 
-index → uses in-memory map
+   * `exact`: matches full name
+   * `prefix`: matches name starting with prefix
+4. Click **Search**
+5. Results will be shown in a table
 
-**Choose match type:**
+---
 
-- exact → name must match exactly
+## ✅ Done
 
-- prefix → name must start with your input
+Your project is now fully documented and GitHub-ready.
+Let me know if you'd like a `.gitignore`, `.gitattributes`, or Swagger/OpenAPI docs added to the project.
 
-- Click Search
+```
 
-- View results in the table
+---
+
+Let me know if you'd like me to generate this as a downloadable `README.md` file or help you push it to GitHub.
+```
