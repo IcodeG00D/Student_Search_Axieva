@@ -120,16 +120,136 @@ The dataset contains approximately **100,000** student records, simulating a **l
 
 ---
 
-## Getting Started
+# AXIEVA PROJECT  
+## In-Memory Student Search - Project Documentation
 
-> Add this section to provide instructions on how to run and test the application.
+### 1. Problem Statement  
+Design and implement a Spring Boot-based RESTful service that reads a large dataset (in CSV format) containing student details, stores the data in memory, creates an index based on student names to optimize search operations, and exposes APIs to create the index and search for students by name.
 
-Example:
+### 2. Introduction  
+The In-Memory Student Search project is a high-performance search system built using Spring Boot. It loads student data from a CSV file into memory, builds an index for fast lookups, and provides REST APIs to search for students by exact name or prefix. The project demonstrates both linear and index-based searching, with optional multi-threaded CSV parsing.
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/axieva-assignment.git
-cd axieva-assignment
+### 3. Architecture  
+The system follows a simple layered architecture:
+- **Controller Layer**: Handles HTTP requests and maps them to service methods.
+- **Service Layer**: Contains the business logic for loading, indexing, and searching student data.
+- **Model Layer**: Defines the Student entity used for data storage.
+- **Indexing**: Uses a `ConcurrentHashMap` to store lowercase student names as keys for fast retrieval.
+- **Parallel Processing**: Utilizes Java `ForkJoinPool` for multi-threaded CSV parsing.
 
-# Build and run the application
-./mvnw spring-boot:run
+### 4. Project Structure
+
+student-search-inmemory/
+├── src/main/java/com/example/inmemory/controller
+├── src/main/java/com/example/inmemory/service
+├── src/main/java/com/example/inmemory/model
+├── src/main/resources/students.csv
+└── pom.xml
+
+
+### 5. Dataset  
+- The dataset is provided as a CSV file (`students.csv`) with the following columns generated using a Python script with the `random` module:
+  - `ID`, `Name`, `Age`, `Class`, `Grade`
+- Example row: `1, Grace Patel, 16, 10A, A`
+- The system can also load CSV files from an **absolute path** provided by the user.
+
+### 6. Algorithms Used for Searching  
+- **Linear Search**: Iterates through the entire list of students to find matches (O(n)).
+- **Index Search**: Uses a pre-built `ConcurrentHashMap` to look up students by lowercase exact name (O(1)).
+- **Prefix Search**: Scans index keys to find matches starting with the given prefix (O(k), where k = number of unique names).
+
+### 7. API Endpoints
+
+1. **POST `/index`** - Build index from CSV file  
+   - Params: `csvPath` (optional)  
+   - Response: Stats about loading and indexing  
+
+2. **GET `/search`** - Search students by exact name  
+   - Params: `name` (required), `mode` (`linear` or `exact`)  
+   - Response: List of matching students  
+
+3. **GET `/search-prefix`** - Search students by name prefix  
+   - Params: `prefix` (required)  
+   - Response: List of matching students  
+
+4. **GET `/debug-index`** - Return the complete index map (for debugging)
+
+### 8. Learnings
+
+- Spring Boot Basics: REST controllers, dependency injection
+- Maven: Dependency management and builds
+- Multithreading in Java: ForkJoinPool for parallelism
+- Data Structures: `ConcurrentHashMap` for thread-safe access
+- Algorithm Complexity: Linear vs Indexed searching
+- REST API Design: Endpoints, query params, JSON responses
+- File I/O in Java: Reading from both classpath and absolute paths
+- OpenCSV Library: For parsing CSV data
+- Indexing Concepts: How indexing improves search performance
+
+### 9. Conclusion
+
+This project showcases a practical implementation of an **in-memory search engine** using Spring Boot. It highlights the trade-offs between different search algorithms, demonstrates the performance benefits of indexing, and serves as a great learning project for:
+- Multithreading
+- REST API development
+- Java data structures
+
+---
+
+## 🚀 Steps to Use
+
+### 📦 Build the Project
+
+--- bash
+mvn clean package
+Generates a JAR in target/ (e.g. student-search-inmemory-0.0.1-SNAPSHOT.jar)
+
+▶️ Run the JAR
+java -jar target/student-search-inmemory-0.0.1-SNAPSHOT.jar
+
+🌐 Open the App in Browser
+
+Visit: http://localhost:8080
+(Full frontend + backend served from same place)
+
+🔧 Use the App
+
+Leave CSV path empty to use the default students.csv in resources.
+
+Or enter a full local file path (e.g. D:\Data\my_students.csv).
+
+**Step A** — Build Index
+
+Open http://localhost:3000
+
+Leave file path empty to use default CSV, or enter full path to your own CSV.
+
+Click "Build Index"
+
+Backend reads, parses CSV, and builds in-memory index (multi-threaded).
+
+See stats like:
+
+Rows: 100000
+Unique names: 100
+Parse: 54 ms
+Index: 33 ms
+
+**Step B** — Search Students
+
+Enter a name or prefix
+
+**Choose mode**:
+
+linear → scans all records
+
+index → uses in-memory map
+
+**Choose match type:**
+
+- exact → name must match exactly
+
+- prefix → name must start with your input
+
+- Click Search
+
+- View results in the table
