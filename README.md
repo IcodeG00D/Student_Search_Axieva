@@ -1,8 +1,5 @@
-Thanks for sharing the full draft! I've gone through your README and cleaned up formatting, fixed section headers, improved Markdown structure, and ensured code blocks render correctly. Here's your polished, GitHub-ready version:
 
----
 
-````markdown
 # Axieva Assignment
 
 ## Objective
