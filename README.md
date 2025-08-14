@@ -265,14 +265,4 @@ Index: 33 ms
 
 ---
 
-## ✅ Done
 
-Your project is now fully documented and GitHub-ready.
-Let me know if you'd like a `.gitignore`, `.gitattributes`, or Swagger/OpenAPI docs added to the project.
-
-```
-
----
-
-Let me know if you'd like me to generate this as a downloadable `README.md` file or help you push it to GitHub.
-```
