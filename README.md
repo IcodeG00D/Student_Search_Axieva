@@ -120,16 +120,9 @@ The dataset contains approximately **100,000** student records, simulating a **l
 
 ---
 
-# AXIEVA PROJECT  
-## In-Memory Student Search - Project Documentation
 
-### 1. Problem Statement  
-Design and implement a Spring Boot-based RESTful service that reads a large dataset (in CSV format) containing student details, stores the data in memory, creates an index based on student names to optimize search operations, and exposes APIs to create the index and search for students by name.
 
-### 2. Introduction  
-The In-Memory Student Search project is a high-performance search system built using Spring Boot. It loads student data from a CSV file into memory, builds an index for fast lookups, and provides REST APIs to search for students by exact name or prefix. The project demonstrates both linear and index-based searching, with optional multi-threaded CSV parsing.
-
-### 3. Architecture  
+### . Architecture  
 The system follows a simple layered architecture:
 - **Controller Layer**: Handles HTTP requests and maps them to service methods.
 - **Service Layer**: Contains the business logic for loading, indexing, and searching student data.
@@ -137,7 +130,7 @@ The system follows a simple layered architecture:
 - **Indexing**: Uses a `ConcurrentHashMap` to store lowercase student names as keys for fast retrieval.
 - **Parallel Processing**: Utilizes Java `ForkJoinPool` for multi-threaded CSV parsing.
 
-### 4. Project Structure
+### . Project Structure
 
 student-search-inmemory/
 ├── src/main/java/com/example/inmemory/controller
@@ -147,18 +140,14 @@ student-search-inmemory/
 └── pom.xml
 
 
-### 5. Dataset  
-- The dataset is provided as a CSV file (`students.csv`) with the following columns generated using a Python script with the `random` module:
-  - `ID`, `Name`, `Age`, `Class`, `Grade`
-- Example row: `1, Grace Patel, 16, 10A, A`
-- The system can also load CSV files from an **absolute path** provided by the user.
 
-### 6. Algorithms Used for Searching  
+
+### . Algorithms Used for Searching  
 - **Linear Search**: Iterates through the entire list of students to find matches (O(n)).
 - **Index Search**: Uses a pre-built `ConcurrentHashMap` to look up students by lowercase exact name (O(1)).
 - **Prefix Search**: Scans index keys to find matches starting with the given prefix (O(k), where k = number of unique names).
 
-### 7. API Endpoints
+### . API Endpoints
 
 1. **POST `/index`** - Build index from CSV file  
    - Params: `csvPath` (optional)  
@@ -174,7 +163,7 @@ student-search-inmemory/
 
 4. **GET `/debug-index`** - Return the complete index map (for debugging)
 
-### 8. Learnings
+### . Learnings
 
 - Spring Boot Basics: REST controllers, dependency injection
 - Maven: Dependency management and builds
@@ -186,7 +175,7 @@ student-search-inmemory/
 - OpenCSV Library: For parsing CSV data
 - Indexing Concepts: How indexing improves search performance
 
-### 9. Conclusion
+### . Conclusion
 
 This project showcases a practical implementation of an **in-memory search engine** using Spring Boot. It highlights the trade-offs between different search algorithms, demonstrates the performance benefits of indexing, and serves as a great learning project for:
 - Multithreading
